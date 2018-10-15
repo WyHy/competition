@@ -1,0 +1,13 @@
+Django==2.0.6
+django-filter==1.1.0
+django-guardian==1.4.9
+django-crispy-forms==1.7.2
+django-rest-swagger==2.2.0
+djangorestframework==3.7.7
+djangorestframework-filters==0.10.2
+djangorestframework-jwt==1.11.0
+django-cors-headers
+django-extensions
+django-werkzeug-debugger-runserver
+PyMySQL
+openslide-python
