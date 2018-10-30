@@ -21,12 +21,13 @@ from django.urls import include
 from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
 from rest_framework_swagger.views import get_swagger_view
 
-from Allocation import views as missions
+from Allocation import views as allocations
 from Backend.extend.CustomRouter import MultipleEntranceRouter
 from PathologyType import views as types
 from Profile import views as profiles
 from TIFF import views as images
 from UserType import views as usertypes
+from Label import views as labels
 
 multipleEntranceRouter = MultipleEntranceRouter()
 # 用户信息
@@ -38,7 +39,9 @@ multipleEntranceRouter.register(r'types', types.ViewSet)
 # 用户类型信息
 multipleEntranceRouter.register(r'usertypes', usertypes.ViewSet)
 # 任务分配信息
-multipleEntranceRouter.register(r'missions', missions.ViewSet)
+multipleEntranceRouter.register(r'missions', allocations.ViewSet)
+# 大图细胞标注信息
+multipleEntranceRouter.register(r'labels', labels.ViewSet)
 
 schema_view = get_swagger_view(title='Competition API')
 

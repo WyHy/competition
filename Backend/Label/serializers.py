@@ -5,7 +5,7 @@ from .models import Cell
 
 
 class CellSerializer(serializers.ModelSerializer):
-    cell_type = TypeSerializer(many=False, read_only=True)
+    # cell_type = TypeSerializer(many=False, read_only=True)
 
     class Meta:
         model = Cell

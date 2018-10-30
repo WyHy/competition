@@ -2,7 +2,6 @@ import json
 
 from django.contrib.auth.models import User, Permission
 from django.test import TestCase, Client
-import uuid
 
 
 # Create your tests here.
@@ -23,82 +22,81 @@ class AllocationTestCase(TestCase):
         self.user.save()
         self.client.login(username="test_user", password="supersercret")
 
-        # create pt
-        response = self.client.post('/api/v1/missions/',
-                                    json.dumps({'name': 'TEST01', 'tip': 'NOTHING', }),
-                                    content_type='application/json')
-
-        self.pt = response.json()['id']
-
-        response = self.client.post('/api/v1/images/edit/',
-                                    json.dumps({'url': 'xx/xx.tif', 'open_id': str(uuid.uuid4()), 'pt': self.pt}),
-                                    content_type='application/json')
-
+        # create 用户类型
+        user_type = {
+            "name": "医生",
+            "description": "人机对战中AI对手，医生",
+        }
+        response = self.client.post('/api/v1/usertypes/', json.dumps(user_type), content_type='application/json')
         if response.status_code == 201:
-            self.parent_id = response.json()['id']
+            self.user_type = response.json()
         else:
             print(response.json())
 
-        response = self.client.post('/api/v1/images/label/edit/',
-                                    json.dumps(
-                                        {'url': 'xx/xx.jpg', 'x': 1, 'y': 1, 'w': 1, 'h': 1, 'parent': self.parent_id}),
-                                    content_type='application/json')
+        model = {
+            "user": self.user.id,
+            "type": self.user_type['id'],
+        }
+        response = self.client.post('/api/v1/profiles/', json.dumps(model), content_type='application/json')
 
         if response.status_code == 201:
-            self.parent = response.json()['id']
+            self.profile = response.json()
         else:
             print(response.json())
 
-        response = self.client.post('/api/v1/images/check/edit/',
-                                    json.dumps({'url': 'xx/xx.jpg', 'x': 1, 'y': 1, 'w': 1, 'h': 1, 'pt': self.pt,
-                                                'parent': self.parent}),
-                                    content_type='application/json')
-
+        # create IMAGE
+        image = {
+            "name": "001.kfb",
+            "path": "xx/xx/kfb",
+        }
+        response = self.client.post('/api/v1/images/', json.dumps(image), content_type='application/json')
         if response.status_code == 201:
-            self.image_id = response.json()['id']
+            self.tiff = response.json()
         else:
             print(response.json())
 
-    def test_image_get(self):
-        response = self.client.get("/api/v1/images/check/edit/", )
+        model = {
+            "user": self.profile['id'],
+            "tiff": self.tiff['id'],
+        }
+        response = self.client.post('/api/v1/missions/', json.dumps(model), content_type='application/json')
+
+        if response.status_code == 201:
+            self.model_id = response.json()['id']
+        else:
+            print(response.json())
+
+    def test_model_get(self):
+        response = self.client.get("/api/v1/missions/", )
         self.assertEqual(response.status_code, 200, (response.json()))
 
-        response = self.client.get('/api/v1/images/check/edit/{}/'.format(self.image_id), )
+        response = self.client.get('/api/v1/missions/{}/'.format(self.model_id), )
         self.assertEqual(response.status_code, 200, (response.json()))
 
-    def test_image_post(self):
-        response = self.client.post('/api/v1/images/check/edit/',
-                                    json.dumps({'url': 'aa/aa.jpg', 'x': 2, 'y': 2, 'w': 2, 'h': 2, 'pt': self.pt,
-                                                'parent': self.parent}),
-                                    content_type='application/json')
-        self.assertEqual(response.status_code, 201, (response.json()))
+    def test_model_post(self):
+        model = {
+            "user": self.user.id,
+            "tiff": self.tiff['id'],
+        }
+        response = self.client.post('/api/v1/missions/', json.dumps(model), content_type='application/json')
+        self.assertEqual(response.status_code, 400, (response.json()))
 
-    def test_image_batch_post(self):
-        response = self.client.post('/api/v1/images/check/edit/',
-                                    json.dumps([
-                                        {'url': 'bb/bb.jpg', 'x': 2, 'y': 2, 'w': 2, 'h': 2, 'pt': self.pt,
-                                         'parent': self.parent},
-                                        {'x': 3, 'y': 3, 'w': 3, 'h': 3, 'pt': self.pt, 'parent': self.parent},
-                                        {'x': 4, 'y': 4, 'w': 4, 'h': 4, 'pt': self.pt, 'parent': self.parent},
-                                    ]),
-                                    content_type='application/json')
-        self.assertEqual(response.status_code, 201, (response.json()))
-        response = self.client.get("/api/v1/images/check/edit/", )
-        print(response.json())
+    def test_model_patch(self):
+        # create IMAGE
+        image = {
+            "name": "002.kfb",
+            "path": "xx/xx/kfb",
+        }
+        response = self.client.post('/api/v1/images/', json.dumps(image), content_type='application/json')
+        if response.status_code == 201:
+            tiff = response.json()
+        else:
+            print(response.json())
 
-    def test_image_put(self):
-        response = self.client.put('/api/v1/images/check/edit/{}/'.format(self.image_id),
-                                   json.dumps(
-                                       {'url': 'aa/aa.jpg', 'x': 2, 'y': 2, 'w': 2, 'h': 2, 'pt': self.pt,
-                                        'parent': self.parent}),
-                                   content_type='application/json')
+        response = self.client.patch('/api/v1/missions/{}/'.format(self.model_id),
+                                     json.dumps({'tiff': tiff['id']}), content_type='application/json')
         self.assertEqual(response.status_code, 200, (response.json()))
 
-    def test_image_patch(self):
-        response = self.client.patch('/api/v1/images/check/edit/{}/'.format(self.image_id),
-                                     json.dumps({'flag': 'INVALID'}), content_type='application/json')
-        self.assertEqual(response.status_code, 200, (response.json()))
-
-    def test_image_delete(self):
-        response = self.client.delete('/api/v1/images/check/edit/{}/'.format(self.image_id), )
-        self.assertEqual(response.status_code, 204, (response.content))
+    def test_model_delete(self):
+        response = self.client.delete('/api/v1/missions/{}/'.format(self.model_id), )
+        self.assertEqual(response.status_code, 204, response.content)

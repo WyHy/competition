@@ -9,7 +9,7 @@ class Type(models.Model):
     """
 
     id = models.AutoField(primary_key=True, verbose_name='唯一主键')
-    name = models.CharField(max_length=32, verbose_name=u"名称")
+    name = models.CharField(max_length=32, verbose_name=u"名称", unique=True)
     color = models.CharField(max_length=16, verbose_name=u"显示颜色")
     description = models.CharField(max_length=128, verbose_name=u"描述")
 
