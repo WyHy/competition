@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'UserType',
     'Profile',
     'Allocation',
+    'Label',
 ]
 
 MIDDLEWARE = [
