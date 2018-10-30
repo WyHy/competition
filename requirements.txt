@@ -10,3 +10,5 @@ django-extensions
 django-werkzeug-debugger-runserver
 PyMySQL
 openslide-python
+pyinotify
+watchdog
