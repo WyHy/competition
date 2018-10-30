@@ -21,7 +21,7 @@ class Image(models.Model):
     result_auto = models.CharField(max_length=32, verbose_name=u"算法诊断结果", default='-')
     result_manual = models.CharField(max_length=32, verbose_name=u"医生诊断结果", default='-')
     result_status = models.CharField(max_length=32, verbose_name=u"标准诊断结果", default='-')
-    status = models.CharField(choices=STATUS_CHOICES, default="CREATED", verbose_name=u"状态")
+    status = models.CharField(max_length=16, choices=STATUS_CHOICES, default="CREATED", verbose_name=u"状态")
     remark = models.TextField(verbose_name=u"故障原因", blank=True, null=True)
 
     create_time = models.DateTimeField(verbose_name=u"创建时间", auto_now_add=True)
