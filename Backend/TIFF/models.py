@@ -16,6 +16,7 @@ class Image(models.Model):
 
     id = models.AutoField(primary_key=True, verbose_name='唯一主键')
     name = models.CharField(max_length=64, verbose_name=u"图像名称")
+    case_no = models.CharField(max_length=64, verbose_name=u"病理号", default='-')
     path = models.CharField(max_length=512, verbose_name=u"图像路径")
     progress = models.CharField(max_length=16, verbose_name=u"当前算法处理进度", default='-')
     result_auto = models.CharField(max_length=32, verbose_name=u"算法诊断结果", default='-')
