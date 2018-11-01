@@ -1,9 +1,0 @@
-openslide-python == 1.1.1
-sanic == 0.7.0
-SimpleITK
-numpy
-pydicom
-requests
-aiofiles
-python-multipart
-pytesseract

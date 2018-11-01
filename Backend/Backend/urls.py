@@ -33,6 +33,9 @@ multipleEntranceRouter = MultipleEntranceRouter()
 # 用户信息
 multipleEntranceRouter.register(r'profiles', profiles.ViewSet)
 # 病理图像信息
+multipleEntranceRouter.register(r'images/questions', images.QuestionViewSet)
+multipleEntranceRouter.register(r'images/progress', images.ProgressViewSet)
+multipleEntranceRouter.register(r'images/results', images.ResultViewSet)
 multipleEntranceRouter.register(r'images', images.ViewSet)
 # 病理类型信息
 multipleEntranceRouter.register(r'types', types.ViewSet)
@@ -50,7 +53,7 @@ urlpatterns = [
     url(r'^api/v1/api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^api/v1/doc/', schema_view),
     url(r'^api/v1/', include(multipleEntranceRouter.urls)),
-    url(r'^api/v1/auto_token/', obtain_jwt_token),
+    url(r'^api/v1/auth_token/', obtain_jwt_token),
     url(r'^api/v1/refresh_jwt_token/', refresh_jwt_token),
 ]
 

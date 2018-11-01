@@ -4,7 +4,7 @@ from rest_framework import viewsets
 from rest_framework.filters import OrderingFilter, SearchFilter
 
 from .models import Image
-from .serializers import ImageSerializer
+from .serializers import ImageSerializer, CompetitionQuestionSerializer, CompetitionProgressSerializer, CompetitionResultSerializer
 
 
 class ImageFilter(filters.FilterSet):
@@ -21,3 +21,15 @@ class ViewSet(viewsets.ModelViewSet):
     lookup_field = 'id'
     ordering_fields = ('id', 'create_time',)
     ordering = ('-id',)
+
+
+class QuestionViewSet(ViewSet):
+    serializer_class = CompetitionQuestionSerializer
+
+
+class ProgressViewSet(ViewSet):
+    serializer_class = CompetitionProgressSerializer
+
+
+class ResultViewSet(ViewSet):
+    serializer_class = CompetitionResultSerializer

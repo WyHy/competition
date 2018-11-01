@@ -6,6 +6,7 @@ TIFF 文件变动嗅探器
 import sys
 import os
 import pyinotify
+import requests
 
 WATCH_PATH = '/home/stimage/Development/DATA/TEST_DATA'
 
@@ -19,6 +20,22 @@ else:
         print('The watch path NOT exists, watching stop now: path=%s.' % (WATCH_PATH))
         exit()
 
+
+ACCEPTED_PATHOLOGY_IMAGE_TYPES = ['.tif', '.kfb']
+
+
+jwt_cache = {}
+HOST = 'localhost:8000'
+
+def get_jwt(open_id):
+    if open_id not in jwt_cache:
+        login_url = 'http://%s/api/v1/auth_token/' % HOST
+        response = requests.post(login_url, json={'username': 'convert', 'password': 'tsimage666'})
+        if response.status_code != 200:
+            raise Exception('can not logins', response.json())
+        jwt_cache[open_id] = 'JWT {}'.format(response.json()['token'])
+    return jwt_cache[open_id]
+
 # 事件回调函数
 class OnIOHandler(pyinotify.ProcessEvent):
     # 重写文件写入完成函数
@@ -27,6 +44,22 @@ class OnIOHandler(pyinotify.ProcessEvent):
         # 处理成小图片，然后发送给grpc服务器或者发给kafka
         file_path = os.path.join(event.path, event.name)
         print('文件完成写入',file_path)
+
+        basename, postfix = os.path.splitext(event.name)
+        if postfix in ACCEPTED_PATHOLOGY_IMAGE_TYPES:
+            image = {
+                "name": event.name,
+                "path": event.path,
+                "status": "CREATED",
+            }
+
+            header = {"Authorization": "JWT %s" % get_jwt('convert')}
+            response = requests.post('http://%s/api/v1/images/' % HOST, json=image, headers=header)
+            if response.status_code == 201:
+                pass
+            else:
+                print(response.json())
+            
     # 重写文件删除函数
     def process_IN_DELETE(self, event):
         print("文件删除: %s " % os.path.join(event.path, event.name))
@@ -61,3 +94,4 @@ def auto_compile(path='.'):
 if __name__ == "__main__":
     auto_compile(WATCH_PATH)
     print('monitor close')
+    # print(get_jwt('1'))
