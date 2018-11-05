@@ -3,10 +3,12 @@ TIFF 文件变动嗅探器
 用于检测指定目录内文件变动
 """
 
-import sys
 import os
+
 import pyinotify
 import requests
+
+from tools.utils import get_jwt, HOST
 
 WATCH_PATH = '/home/stimage/Development/DATA/TEST_DATA'
 
@@ -20,21 +22,8 @@ else:
         print('The watch path NOT exists, watching stop now: path=%s.' % (WATCH_PATH))
         exit()
 
-
 ACCEPTED_PATHOLOGY_IMAGE_TYPES = ['.tif', '.kfb']
 
-
-jwt_cache = {}
-HOST = 'localhost:8000'
-
-def get_jwt(open_id):
-    if open_id not in jwt_cache:
-        login_url = 'http://%s/api/v1/auth_token/' % HOST
-        response = requests.post(login_url, json={'username': 'convert', 'password': 'tsimage666'})
-        if response.status_code != 200:
-            raise Exception('can not logins', response.json())
-        jwt_cache[open_id] = 'JWT {}'.format(response.json()['token'])
-    return jwt_cache[open_id]
 
 # 事件回调函数
 class OnIOHandler(pyinotify.ProcessEvent):
@@ -43,7 +32,7 @@ class OnIOHandler(pyinotify.ProcessEvent):
         # logging.info("create file: %s " % os.path.join(event.path, event.name))
         # 处理成小图片，然后发送给grpc服务器或者发给kafka
         file_path = os.path.join(event.path, event.name)
-        print('文件完成写入',file_path)
+        print('文件完成写入', file_path)
 
         basename, postfix = os.path.splitext(event.name)
         if postfix in ACCEPTED_PATHOLOGY_IMAGE_TYPES:
@@ -59,10 +48,11 @@ class OnIOHandler(pyinotify.ProcessEvent):
                 pass
             else:
                 print(response.json())
-            
+
     # 重写文件删除函数
     def process_IN_DELETE(self, event):
         print("文件删除: %s " % os.path.join(event.path, event.name))
+
     # 重写文件改变函数
     def process_IN_MODIFY(self, event):
         print("文件改变: %s " % os.path.join(event.path, event.name))
@@ -73,12 +63,11 @@ class OnIOHandler(pyinotify.ProcessEvent):
 
 
 def auto_compile(path='.'):
-
     wm = pyinotify.WatchManager()
     # mask = pyinotify.EventsCodes.ALL_FLAGS.get('IN_CREATE', 0)
-    # mask = pyinotify.EventsCodes.FLAG_COLLECTIONS['OP_FLAGS']['IN_CREATE']                             # 监控内容，只监听文件被完成写入
+    # mask = pyinotify.EventsCodes.FLAG_COLLECTIONS['OP_FLAGS']['IN_CREATE']          # 监控内容，只监听文件被完成写入
     mask = pyinotify.IN_CREATE | pyinotify.IN_CLOSE_WRITE | pyinotify.IN_DELETE
-    notifier = pyinotify.ThreadedNotifier(wm, OnIOHandler())    # 回调函数
+    notifier = pyinotify.ThreadedNotifier(wm, OnIOHandler())  # 回调函数
     notifier.start()
     wm.add_watch(path, mask, rec=True, auto_add=True)
     print('Start monitoring %s' % path)
@@ -90,6 +79,7 @@ def auto_compile(path='.'):
         except KeyboardInterrupt:
             notifier.stop()
             break
+
 
 if __name__ == "__main__":
     auto_compile(WATCH_PATH)

@@ -7,7 +7,6 @@ from .models import Profile
 
 # Register your models here.
 class ProfileForm(forms.ModelForm):
-
     class Meta:
         model = Profile
         fields = ['user', 'type']

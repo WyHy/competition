@@ -34,7 +34,7 @@ class AllocationTestCase(TestCase):
             print(response.json())
 
         model = {
-            "user": self.user.id,
+            "profile": self.user.id,
             "type": self.user_type['id'],
         }
         response = self.client.post('/api/v1/profiles/', json.dumps(model), content_type='application/json')
@@ -56,7 +56,7 @@ class AllocationTestCase(TestCase):
             print(response.json())
 
         model = {
-            "user": self.profile['id'],
+            "profile": self.profile['id'],
             "tiff": self.tiff['id'],
         }
         response = self.client.post('/api/v1/missions/', json.dumps(model), content_type='application/json')
@@ -75,7 +75,7 @@ class AllocationTestCase(TestCase):
 
     def test_model_post(self):
         model = {
-            "user": self.user.id,
+            "profile": self.user.id,
             "tiff": self.tiff['id'],
         }
         response = self.client.post('/api/v1/missions/', json.dumps(model), content_type='application/json')

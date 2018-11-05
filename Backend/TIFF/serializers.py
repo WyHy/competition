@@ -14,7 +14,7 @@ class ImageSerializer(serializers.ModelSerializer):
 class CompetitionQuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Image
-        fields = ('id', 'name''case_no',)
+        fields = ('id', 'name', 'case_no',)
 
 
 class CompetitionProgressSerializer(serializers.ModelSerializer):

@@ -10,7 +10,7 @@ from .serializers import ProfileSerializer
 class ProfileFilter(filters.FilterSet):
     class Meta:
         model = Profile
-        fields = ('id',)
+        fields = ('id', 'type')
 
 
 class ViewSet(viewsets.ModelViewSet):
