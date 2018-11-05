@@ -26,7 +26,7 @@ class ViewSet(viewsets.ModelViewSet):
         # if self.request.method == 'GET':
         #     return AllocationViewSerializer
 
-        # if self.request.method == 'POST':
-        #     return AllocationSerializer
+        if self.request.method == 'POST':
+            return AllocationSerializer
 
         return AllocationViewSerializer
