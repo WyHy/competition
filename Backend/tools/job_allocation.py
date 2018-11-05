@@ -1,7 +1,7 @@
 import requests
 import random
 
-from tools.utils import get_jwt, HOST
+from utils import get_jwt, HOST
 
 
 def get_job_list():

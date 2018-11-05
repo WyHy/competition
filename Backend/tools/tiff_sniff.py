@@ -8,7 +8,7 @@ import os
 import pyinotify
 import requests
 
-from tools.utils import get_jwt, HOST
+from utils import get_jwt, HOST
 
 WATCH_PATH = '/home/stimage/Development/DATA/TEST_DATA'
 
