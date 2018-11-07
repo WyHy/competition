@@ -21,7 +21,8 @@ class Cell(models.Model):
     y = models.FloatField(verbose_name='标注点左上角坐标-y')
     w = models.FloatField(verbose_name='标注点细胞宽度-w')
     h = models.FloatField(verbose_name='标注点细胞高度-h')
-    cell_type = models.ForeignKey(Type, on_delete=models.CASCADE, verbose_name="细胞类别")
+    cell_type = models.CharField(max_length=32, verbose_name=u"细胞类别")
+    accuracy = models.FloatField(verbose_name='相似度', blank=True, null=True)
     source_type = models.CharField(max_length=16, choices=SOURCE_TYPE_CHOICES, default="AI", verbose_name=u"标注类别")
 
     create_time = models.DateTimeField(verbose_name=u"创建时间", auto_now_add=True)

@@ -1,7 +1,7 @@
 import requests
 
 jwt_cache = {}
-HOST = '127.0.0.1:8000'
+HOST = '192.168.2.148:8000'
 
 
 def get_jwt(open_id):

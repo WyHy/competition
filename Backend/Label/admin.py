@@ -5,8 +5,8 @@ from Label.models import Cell, ScreenShot
 
 
 class CellAdmin(admin.ModelAdmin):
-    fields = ('image', 'x', 'y', 'w', 'h', 'cell_type', 'source_type')
-    list_display = ('id', 'image', 'x', 'y', 'w', 'h', 'cell_type', 'source_type', 'create_time')
+    fields = ('image', 'x', 'y', 'w', 'h', 'cell_type', 'accuracy', 'source_type')
+    list_display = ('id', 'image', 'x', 'y', 'w', 'h', 'cell_type', 'accuracy', 'source_type', 'create_time')
     list_per_page = 50
     ordering = ('id',)
 
