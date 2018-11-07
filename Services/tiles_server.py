@@ -57,7 +57,8 @@ def get_slide(tif_path):
     if basename in slide_cache:
         slide = slide_cache[basename]
     else:
-        slide_cache[basename] = Aslide(tif_path)
+        slide = Aslide(tif_path)
+        slide_cache[basename] = slide
 
     return slide
 
