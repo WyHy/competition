@@ -20,4 +20,4 @@ class ViewSet(viewsets.ModelViewSet):
     filter_class = ProfileFilter
     lookup_field = 'id'
     ordering_fields = ('id', 'create_time',)
-    ordering = ('-id',)
+    ordering = ('id',)

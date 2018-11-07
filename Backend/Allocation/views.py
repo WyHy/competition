@@ -20,7 +20,7 @@ class ViewSet(viewsets.ModelViewSet):
     filter_class = AllocationFilter
     lookup_field = 'id'
     ordering_fields = ('id', 'create_time',)
-    ordering = ('-id',)
+    ordering = ('id',)
 
     def get_serializer_class(self):
         # if self.request.method == 'GET':

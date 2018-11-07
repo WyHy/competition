@@ -21,7 +21,7 @@ class CellViewSet(viewsets.ModelViewSet):
     filter_class = CellFilter
     lookup_field = 'id'
     ordering_fields = ('id', 'create_time',)
-    ordering = ('-id',)
+    ordering = ('id',)
 
 
 class ScreenShotFilter(filters.FilterSet):
@@ -37,4 +37,4 @@ class ScreenShotViewSet(viewsets.ModelViewSet):
     filter_class = ScreenShotFilter
     lookup_field = 'id'
     ordering_fields = ('id', 'create_time',)
-    ordering = ('-id',)
+    ordering = ('id',)

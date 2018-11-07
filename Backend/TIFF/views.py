@@ -20,7 +20,7 @@ class ViewSet(viewsets.ModelViewSet):
     filter_class = ImageFilter
     lookup_field = 'id'
     ordering_fields = ('id', 'create_time',)
-    ordering = ('-id',)
+    ordering = ('id',)
 
 
 class QuestionViewSet(ViewSet):
