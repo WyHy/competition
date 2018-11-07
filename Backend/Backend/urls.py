@@ -44,7 +44,9 @@ multipleEntranceRouter.register(r'usertypes', usertypes.ViewSet)
 # 任务分配信息
 multipleEntranceRouter.register(r'missions', allocations.ViewSet)
 # 大图细胞标注信息
-multipleEntranceRouter.register(r'labels', labels.ViewSet)
+multipleEntranceRouter.register(r'labels', labels.CellViewSet)
+# 大图截图信息
+multipleEntranceRouter.register(r'screenshots', labels.ScreenShotViewSet)
 
 schema_view = get_swagger_view(title='Competition API')
 
