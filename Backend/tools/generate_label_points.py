@@ -13,7 +13,11 @@ def read_and_update(path):
         tiff_name = os.path.basename(path)
         response = requests.get('http://%s/api/v1/images/?name=%s' % (HOST, tiff_name), headers=header)
         if response.status_code == 200:
-            image = response.json()['id']
+            data = response.json()
+            if data:
+                image = response.json()[0]['id']
+            else:
+                raise Exception("NO TIFF NAMED %s" % tiff_name)
         else:
             raise Exception(response.json())
 
