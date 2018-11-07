@@ -10,16 +10,21 @@ def read_and_update(path):
     header = {"Authorization": "JWT %s" % get_jwt('convert')}
 
     with open(path) as f:
-        tiff_name = os.path.basename(path)
-        response = requests.get('http://%s/api/v1/images/?name=%s' % (HOST, tiff_name), headers=header)
-        if response.status_code == 200:
-            data = response.json()
-            if data:
-                image = response.json()[0]['id']
-            else:
-                raise Exception("NO TIFF NAMED %s" % tiff_name)
+        tiff_name = os.path.splitext(os.path.basename(path))[0]
+        tiff_name = tiff_name.replace("_clas", '')
+
+        print("Processing on %s..." % tiff_name)
+
+        image = None
+        for item in ['.kfb', '.tif']:
+            response = requests.get('http://%s/api/v1/images/?name=%s' % (HOST, tiff_name + item), headers=header)
+            if response.status_code == 200 and response.json():
+                data = response.json()
+                if data:
+                    image = data[0]['id']
+                    break
         else:
-            raise Exception(response.json())
+            raise Exception("NO TIFF NAMED %s" % tiff_name)
 
         reader = csv.reader(f, delimiter=',')
         next(reader)
@@ -27,8 +32,7 @@ def read_and_update(path):
         for line in reader:
             x_y, label_yolo, accuracy_yolo, label_xception, accuracy_xception, xmin, ymin, xmax, ymax = line
             x0, y0 = x_y.split('_')
-            x0, y0, accuracy, xmin, ymin, xmax, ymax = int(x0), int(y0), float(accuracy_xception), int(xmin), int(
-                ymin), int(xmax), int(ymax)
+            x0, y0, accuracy, xmin, ymin, xmax, ymax = int(x0), int(y0), float(accuracy_xception), float(xmin), float(ymin), float(xmax), float(ymax)
             x, y, w, h = x0 + xmin, y0 + ymin, xmax - xmin, ymax - ymin
 
             label = {
@@ -52,5 +56,6 @@ def read_and_update(path):
 if __name__ == '__main__':
     dir_path = 'C:/Users/graya/Desktop/META'
     files = os.listdir(dir_path)
-    for file in files[:1]:
-        read_and_update(os.path.join(dir_path, file))
+    for file in files:
+        if file.endswith('_clas.csv'):
+            read_and_update(os.path.join(dir_path, file))

@@ -11,7 +11,7 @@ from .serializers import CellSerializer, ScreenShotSerializer
 class CellFilter(filters.FilterSet):
     class Meta:
         model = Cell
-        fields = ('id', 'image')
+        fields = ('id', 'image', 'cell_type')
 
 
 class CellViewSet(viewsets.ModelViewSet):
