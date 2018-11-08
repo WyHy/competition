@@ -1,13 +1,11 @@
+import os
+from io import BytesIO
+
+import requests
 from sanic import Sanic, response
-from openslide import OpenSlide, ImageSlide, open_slide
-from openslide.deepzoom import DeepZoomGenerator
+
 from Aslide.aslide import Aslide
 from Aslide.deepzoom import ADeepZoomGenerator
-# from tslide.TslideDeepZoomGenerator import DeepZoomGenerator as TSDeepZoomer
-from io import BytesIO
-from PIL import Image
-import os
-import requests
 
 app = Sanic()
 
@@ -17,7 +15,7 @@ jwt_cache = {}
 
 HOST = 'localhost:8000'
 USERNAME = 'convert'
-# StorgePath = '/home/stimage/Development/DATA/RESOURCE/TIFFS'
+
 
 def get_jwt(username):
     if username not in jwt_cache:
@@ -40,7 +38,7 @@ def get_path(image_id, request):
 
         tiff_url = 'http://%s/api/v1/images/?id=%s' % (HOST, image_id)
 
-        response = requests.get(tiff_url,  headers={'Authorization': 'JWT {}'.format(jwt)})
+        response = requests.get(tiff_url, headers={'Authorization': 'JWT {}'.format(jwt)})
         if response.status_code != 200:
             raise Exception('can not get resource', response.content)
 
@@ -78,17 +76,32 @@ def file(bytes, mime_type, image_id):
 
 @app.route('/tiles/<image_id>/')
 async def tiles_dzi(request, image_id):
+    """
+    get tiff information
+    :param request:
+    :param image_id: id of tiff image
+    :return:
+    """
     slide = get_slide(get_path(image_id, request))
     try:
         zoomer = ADeepZoomGenerator(slide).get_dzi('jpeg')
 
         return response.html(zoomer)
     except Exception as e:
-        return response.html(str(e))    
+        return response.html(str(e))
 
 
 @app.route('/tiles/<image_id>_files/<z:int>/<x:int>_<y:int>.<format:[A-z]+>')
 async def tiles_png(request, image_id, z, x, y, format):
+    """
+    get tile image
+    :param request:
+    :param image_id: id of tiff image
+    :param x: coordinate-x
+    :param y: coordinate-y
+    :param format: view format
+    :return:
+    """
     slide = get_slide(get_path(image_id, request))
     x = int(x)
     y = int(y)
@@ -96,9 +109,31 @@ async def tiles_png(request, image_id, z, x, y, format):
     bio = BytesIO()
 
     tiles_image = ADeepZoomGenerator(slide).get_tile(z, (x, y))
-    tiles_image.save(bio, 'jpeg')
+    tiles_image.save(bio, 'png')
     image_bytes = bio.getvalue()
-    return file(bytes=image_bytes, mime_type='image/jpeg', image_id='tile_{x}_{y}_{z}'.format(x=x, y=x, z=z))
+    return file(bytes=image_bytes, mime_type='image/png', image_id='tile_{x}_{y}_{z}'.format(x=x, y=x, z=z))
+
+
+@app.route("/cells/<image_id>/<x>/<y>/<w>/<h>/<format:[A-z]+>")
+async def cell_image_request(request, image_id, x, y, w, h, format):
+    """
+    get cell image
+    :param request:
+    :param image_id: id of tiff image
+    :param x: coordinate-x
+    :param y: coordinate-y
+    :param w: image width
+    :param h: image height
+    :param format: view format
+    :return:
+    """
+    slide = get_slide(get_path(image_id, request))
+    x, y, w, h = int(float(x)), int(float(y)), int(float(w)), int(float(h))
+    tile_image = slide.read_region((x, y), 0, (w, h))
+    bio = BytesIO()
+    tile_image.save(bio, 'png')
+    return file(bytes=bio.getvalue(), mime_type='image/png',
+                filename='cell_{x}_{y}_{w}_{h}.{f}'.format(x=x, y=y, w=w, h=h, f=format))
 
 
 if __name__ == '__main__':
