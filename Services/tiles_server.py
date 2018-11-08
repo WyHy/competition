@@ -133,7 +133,7 @@ async def cell_image_request(request, image_id, x, y, w, h, format):
     bio = BytesIO()
     tile_image.save(bio, 'png')
     return file(bytes=bio.getvalue(), mime_type='image/png',
-                filename='cell_{x}_{y}_{w}_{h}.{f}'.format(x=x, y=y, w=w, h=h, f=format))
+                image_id='cell_{x}_{y}_{w}_{h}.{f}'.format(x=x, y=y, w=w, h=h, f=format))
 
 
 if __name__ == '__main__':
