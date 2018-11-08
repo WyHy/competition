@@ -66,7 +66,7 @@ def file(bytes, mime_type, image_id):
     headers = {}
     headers.setdefault(
         'Content-Disposition',
-        'attachment; image_id="{}"'.format(image_id))
+        'attachment; filename="{}"'.format(image_id))
 
     return response.HTTPResponse(status=200,
                                  headers=headers,
@@ -111,7 +111,7 @@ async def tiles_png(request, image_id, z, x, y, format):
     tiles_image = ADeepZoomGenerator(slide).get_tile(z, (x, y))
     tiles_image.save(bio, 'png')
     image_bytes = bio.getvalue()
-    return file(bytes=image_bytes, mime_type='image/png', image_id='tile_{x}_{y}_{z}'.format(x=x, y=x, z=z))
+    return file(bytes=image_bytes, mime_type='image/png', filename='tile_{x}_{y}_{z}.{f}'.format(x=x, y=x, z=z, f=format))
 
 
 @app.route("/cells/<image_id>/<x>/<y>/<w>/<h>/<format:[A-z]+>")
@@ -133,7 +133,7 @@ async def cell_image_request(request, image_id, x, y, w, h, format):
     bio = BytesIO()
     tile_image.save(bio, 'png')
     return file(bytes=bio.getvalue(), mime_type='image/png',
-                image_id='cell_{x}_{y}_{w}_{h}.{f}'.format(x=x, y=y, w=w, h=h, f=format))
+                filename='cell_{x}_{y}_{w}_{h}.{f}'.format(x=x, y=y, w=w, h=h, f=format))
 
 
 if __name__ == '__main__':
