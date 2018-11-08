@@ -114,7 +114,7 @@ async def tiles_png(request, image_id, z, x, y, format):
     return file(bytes=image_bytes, mime_type='image/png', image_id='tile_{x}_{y}_{z}.{f}'.format(x=x, y=x, z=z, f=format))
 
 
-@app.route("/cells/<image_id>/<x:float>_<y:float>_<w:float>_<h:float>.<format:[A-z]+>")
+@app.route("/cells/<image_id>/<x:int>_<y:int>_<w:int>_<h:int>.<format:[A-z]+>")
 async def cell_image_request(request, image_id, x, y, w, h, format):
     """
     get cell image
