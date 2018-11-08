@@ -13,6 +13,7 @@ class Profile(models.Model):
     id = models.AutoField(primary_key=True, verbose_name='唯一主键')
     user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name="用户")
     type = models.ForeignKey(UserType, on_delete=models.CASCADE, verbose_name=u"类型")
+    nickname = models.CharField(max_length=64, verbose_name=u"昵称")
 
     create_time = models.DateTimeField(verbose_name=u"创建时间", auto_now_add=True)
     update_time = models.DateTimeField(verbose_name=u"处理时间", auto_now=True)

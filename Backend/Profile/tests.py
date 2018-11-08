@@ -35,6 +35,7 @@ class ProfileTestCase(TestCase):
 
         model = {
             "user": self.user.id,
+            "nickname": "zero",
             "type": self.user_type['id'],
         }
         response = self.client.post('/api/v1/profiles/', json.dumps(model), content_type='application/json')
@@ -54,10 +55,24 @@ class ProfileTestCase(TestCase):
     def test_model_post(self):
         model = {
             "user": self.user.id,
+            "nickname": "zero",
             "type": self.user_type['id'],
         }
         response = self.client.post('/api/v1/profiles/', json.dumps(model), content_type='application/json')
         self.assertEqual(response.status_code, 400, (response.json()))
+
+    def test_model_create_user_post(self):
+        model = {
+            "type": 1,
+            "nickname": "zero",
+            "user": {
+                "username": "13260231030",
+            }
+        }
+
+        response = self.client.post('/api/v1/users/', json.dumps(model), content_type='application/json')
+        print(response.json())
+        self.assertEqual(response.status_code, 201, (response.json()))
 
     def test_model_patch(self):
         user_type = {

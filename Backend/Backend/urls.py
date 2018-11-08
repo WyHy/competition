@@ -28,10 +28,13 @@ from Profile import views as profiles
 from TIFF import views as images
 from UserType import views as usertypes
 from Label import views as labels
+from Activity import views as activities
 
 multipleEntranceRouter = MultipleEntranceRouter()
 # 用户信息
 multipleEntranceRouter.register(r'profiles', profiles.ViewSet)
+# 新建用户信息
+multipleEntranceRouter.register(r'users', profiles.AddUserSet)
 # 病理图像信息
 multipleEntranceRouter.register(r'images/questions', images.QuestionViewSet)
 multipleEntranceRouter.register(r'images/progress', images.ProgressViewSet)
@@ -47,6 +50,9 @@ multipleEntranceRouter.register(r'missions', allocations.ViewSet)
 multipleEntranceRouter.register(r'labels', labels.CellViewSet)
 # 大图截图信息
 multipleEntranceRouter.register(r'screenshots', labels.ScreenShotViewSet)
+
+# 竞猜信息
+multipleEntranceRouter.register(r'activities', activities.ViewSet)
 
 schema_view = get_swagger_view(title='Competition API')
 

@@ -9,7 +9,7 @@ from .models import Profile
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['user', 'type']
+        fields = ['nickname', 'user', 'type']
 
     def __init__(self, *args, **kwargs):
         super(ProfileForm, self).__init__(*args, **kwargs)
@@ -18,8 +18,8 @@ class ProfileForm(forms.ModelForm):
 
 
 class ProfileAdmin(admin.ModelAdmin):
-    fields = ('user', 'type',)
-    list_display = ('id', 'user', 'type', 'create_time', 'update_time')
+    fields = ('nickname', 'user', 'type',)
+    list_display = ('id', 'nickname', 'user', 'type', 'create_time', 'update_time')
     form = ProfileForm
     list_per_page = 50
     ordering = ('id',)

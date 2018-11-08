@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'Profile',
     'Allocation',
     'Label',
+    'Activity',
 ]
 
 MIDDLEWARE = [
@@ -129,3 +130,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# 自定义变量
+
+CUSTOM = {
+    "default_password": '12345678'
+}
