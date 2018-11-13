@@ -132,7 +132,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 # 自定义变量
-
 CUSTOM = {
     "default_password": '12345678'
 }
