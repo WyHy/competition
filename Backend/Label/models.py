@@ -29,7 +29,7 @@ class Cell(models.Model):
     update_time = models.DateTimeField(verbose_name=u"处理时间", auto_now=True)
 
     def __str__(self):
-        return str(self.id) + "-" + str(self.name)
+        return str(self.id) + "-" + str(self.image.name)
 
     class Meta:
         verbose_name = u'标注信息'
