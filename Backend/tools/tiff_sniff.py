@@ -37,7 +37,7 @@ class OnIOHandler(pyinotify.ProcessEvent):
         basename, postfix = os.path.splitext(event.name)
         if postfix in ACCEPTED_PATHOLOGY_IMAGE_TYPES:
             image = {
-                # "name": event.name.replace(" ", "-"),
+                "name": event.name,
                 "case_no": os.path.splitext(event.name)[0],
                 "path": event.path,
                 "status": "CREATED",
