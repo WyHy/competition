@@ -11,4 +11,4 @@ django-werkzeug-debugger-runserver
 PyMySQL
 openslide-python
 pyinotify
-watchdog
+requests

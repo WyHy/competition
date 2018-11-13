@@ -10,7 +10,7 @@ from .serializers import ProfileSerializer, UserCreateSerializer
 class ProfileFilter(filters.FilterSet):
     class Meta:
         model = Profile
-        fields = ('id', 'type')
+        fields = ('id', 'type', 'user')
 
 
 class ViewSet(viewsets.ModelViewSet):
