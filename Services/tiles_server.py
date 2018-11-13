@@ -13,7 +13,7 @@ tif_path_cache = {}
 slide_cache = {}
 jwt_cache = {}
 
-HOST = 'localhost:8000'
+HOST = 'localhost'
 USERNAME = 'convert'
 
 
