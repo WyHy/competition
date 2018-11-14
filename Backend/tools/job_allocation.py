@@ -38,8 +38,8 @@ def do_job_allocate():
 
     header = {"Authorization": "JWT %s" % get_jwt('convert')}
 
-    # 列表shuffle
-    random.shuffle(job_ids)
+    # 列表shuffle，现阶段按序排列，以对应医生答题顺序
+    # random.shuffle(job_ids)
 
     delta = 10
     lst = [job_ids[i: i + delta] for i in range(0, len(job_ids), delta)]
