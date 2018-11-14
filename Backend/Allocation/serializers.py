@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from TIFF.serializers import CompetitionQuestionSerializer
+from TIFF.models import Image
 from .models import Allocation
 
 
@@ -10,8 +10,14 @@ class AllocationSerializer(serializers.ModelSerializer):
         fields = ('id', 'profile', 'tiff', 'create_time', 'update_time',)
 
 
+class CompetitionDoctorResultSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Image
+        fields = ('id', 'name', 'case_no', 'result_manual')
+
+
 class AllocationViewSerializer(serializers.ModelSerializer):
-    tiff = CompetitionQuestionSerializer(many=False, read_only=True)
+    tiff = CompetitionDoctorResultSerializer(many=False, read_only=True)
 
     class Meta:
         model = Allocation
