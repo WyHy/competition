@@ -3,25 +3,22 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets
 from rest_framework.filters import OrderingFilter, SearchFilter
 
-from .models import Profile
-from .serializers import ProfileSerializer, UserCreateSerializer
+# Create your views here.
+from Question.models import Question
+from Question.serializers import QuestionSerializer
 
 
-class ProfileFilter(filters.FilterSet):
+class QuestionFilter(filters.FilterSet):
     class Meta:
-        model = Profile
-        fields = ('id', 'type', 'user__username')
+        model = Question
+        fields = ('id', 'image')
 
 
 class ViewSet(viewsets.ModelViewSet):
-    queryset = Profile.objects.filter(type=3)
-    serializer_class = ProfileSerializer
+    queryset = Question.objects.all()
+    serializer_class = QuestionSerializer
     filter_backends = (DjangoFilterBackend, SearchFilter, OrderingFilter)
-    filter_class = ProfileFilter
+    filter_class = QuestionFilter
     lookup_field = 'id'
     ordering_fields = ('id', 'create_time',)
     ordering = ('id',)
-
-
-class AddUserSet(ViewSet):
-    serializer_class = UserCreateSerializer

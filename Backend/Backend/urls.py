@@ -29,6 +29,7 @@ from TIFF import views as images
 from UserType import views as usertypes
 from Label import views as labels
 from Activity import views as activities
+from Question import views as questions
 
 multipleEntranceRouter = MultipleEntranceRouter()
 # 用户信息
@@ -51,8 +52,12 @@ multipleEntranceRouter.register(r'labels', labels.CellViewSet)
 # 大图截图信息
 multipleEntranceRouter.register(r'screenshots', labels.ScreenShotViewSet)
 
+# 竞猜答题统计
+multipleEntranceRouter.register(r'activities/statistic', activities.StatisticViewSet)
 # 竞猜信息
 multipleEntranceRouter.register(r'activities', activities.ViewSet)
+# 竞猜题目信息
+multipleEntranceRouter.register(r'questions', questions.ViewSet)
 
 schema_view = get_swagger_view(title='Competition API')
 

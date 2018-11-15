@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'Allocation',
     'Label',
     'Activity',
+    'Question',
 ]
 
 MIDDLEWARE = [
