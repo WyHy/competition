@@ -36,7 +36,6 @@ class StatisticViewSet(ViewSet):
     http_method_names = ['get', 'post']
 
     def create(self, request, *args, **kwargs):
-
         return Response(data={"status": "OK"}, status=status.HTTP_200_OK)
 
     def list(self, request, *args, **kwargs):

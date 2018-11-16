@@ -12,3 +12,4 @@ PyMySQL
 openslide-python
 pyinotify
 requests
+redis

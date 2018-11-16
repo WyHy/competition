@@ -88,8 +88,8 @@ DATABASES = {
         'NAME': 'competition',
         'USER': 'test',
         'PASSWORD': 'test',
-        # 'HOST': '192.168.2.148',
-        'HOST': 'localhost',
+        'HOST': '192.168.2.148',
+        # 'HOST': 'localhost',
         'PORT': 3306,
         'OPTIONS': {
             'init_command': 'SET default_storage_engine=INNODB,character_set_connection=utf8,collation_connection=utf8_unicode_ci;'}
@@ -136,5 +136,8 @@ STATIC_URL = '/static/'
 
 # 自定义变量
 CUSTOM = {
-    "default_password": '12345678'
+    "default_password": '12345678',
+
+    # 0-NOT START, 1-START
+    "game_status": 0,
 }
