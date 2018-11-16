@@ -21,6 +21,6 @@ class AnswerSerializer(serializers.ModelSerializer):
 
         obj = Answer.objects.get(image=image, profile=profile)
         if obj:
-            return self.update(obj, validated_data)
+            return super(AnswerSerializer, self).update(obj, validated_data)
         else:
             return super(AnswerSerializer, self).create(validated_data)
