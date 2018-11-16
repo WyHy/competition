@@ -68,5 +68,7 @@ class GameStatusControlView(APIView):
         elif game_status == "1":
             settings.CUSTOM['game_status'] = 1
             return Response(data={"msg": "比赛开始"}, status=status.HTTP_200_OK)
+        elif not game_status:
+            return Response(data={"status": settings.CUSTOM['game_status']}, status=status.HTTP_200_OK)
 
         return Response(data={"msg": "未识别的比赛状态控制命令"}, status=status.HTTP_406_NOT_ACCEPTABLE)
