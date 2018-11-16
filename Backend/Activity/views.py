@@ -13,6 +13,8 @@ from Backend import settings
 from Profile.models import Profile
 from TIFF.models import Image
 
+import redis
+
 
 class AnswerFilter(filters.FilterSet):
     class Meta:
@@ -63,12 +65,12 @@ class GameStatusControlView(APIView):
         game_status = request.GET.get('status')
 
         if game_status == "0":
-            settings.CUSTOM['game_status'] = 0
+            settings.redis_connection.set('status', '0')
             return Response(data={"msg": "比赛中止"}, status=status.HTTP_200_OK)
         elif game_status == "1":
-            settings.CUSTOM['game_status'] = 1
+            settings.redis_connection.set('status', '1')
             return Response(data={"msg": "比赛开始"}, status=status.HTTP_200_OK)
         elif not game_status:
-            return Response(data={"status": settings.CUSTOM['game_status']}, status=status.HTTP_200_OK)
+            return Response(data={"status": settings.redis_connection.get('status')}, status=status.HTTP_200_OK)
 
         return Response(data={"msg": "未识别的比赛状态控制命令"}, status=status.HTTP_406_NOT_ACCEPTABLE)

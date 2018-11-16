@@ -26,7 +26,7 @@ class ViewSet(viewsets.ModelViewSet):
     ordering = ('id',)
 
     def update(self, request, *args, **kwargs):
-        if settings.CUSTOM['game_status'] == 0:
+        if settings.redis_connection.get('status') == "0":
             return Response(data={"msg": "比赛尚未开始，请等待！"}, status=status.HTTP_406_NOT_ACCEPTABLE)
         else:
             return super(ViewSet, self).update(request, *args, **kwargs)

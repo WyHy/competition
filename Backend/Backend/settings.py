@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+import redis
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -141,3 +142,8 @@ CUSTOM = {
     # 0-NOT START, 1-START
     "game_status": 0,
 }
+
+# redis 配置
+redis_connection = redis.Redis(host='localhost', port=6379, decode_responses=True)
+# 设置初始比赛状态
+redis_connection.set('status', "0")
