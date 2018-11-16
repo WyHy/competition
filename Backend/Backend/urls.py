@@ -68,6 +68,7 @@ urlpatterns = [
     url(r'^api/v1/', include(multipleEntranceRouter.urls)),
     url(r'^api/v1/auth_token/', obtain_jwt_token),
     url(r'^api/v1/refresh_jwt_token/', refresh_jwt_token),
+    url(r'^api/v1/game/', activities.GameStatusControlView.as_view()),
 ]
 
 urlpatterns += staticfiles_urlpatterns()

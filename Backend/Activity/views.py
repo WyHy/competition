@@ -3,11 +3,13 @@ from django.db.models import F, Count
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, status
 from rest_framework.filters import OrderingFilter, SearchFilter
+from rest_framework.views import APIView
 # Create your views here.
 from rest_framework.response import Response
 
 from Activity.models import Answer
-from Activity.serializers import AnswerSerializer, ProfileSerializer
+from Activity.serializers import AnswerSerializer
+from Backend import settings
 from Profile.models import Profile
 from TIFF.models import Image
 
@@ -45,7 +47,8 @@ class StatisticViewSet(ViewSet):
                             status=status.HTTP_503_SERVICE_UNAVAILABLE)
 
         # the answer is right if gamer's answer is contained in standard diagnose result
-        activies = Answer.objects.filter(image__result_status__contains=F('answer__name')).values('profile').annotate(count=Count('profile')).order_by("-count")
+        activies = Answer.objects.filter(image__result_status__contains=F('answer__name')).values('profile').annotate(
+            count=Count('profile')).order_by("-count")
 
         data = []
         for item in activies:
@@ -53,3 +56,17 @@ class StatisticViewSet(ViewSet):
             data.append({'name': profile.nickname, "count": item['count'], "tel": profile.user.username})
 
         return Response(data=data, status=status.HTTP_200_OK)
+
+
+class GameStatusControlView(APIView):
+    def get(self, request, format=None):
+        game_status = request.GET.get('status')
+
+        if game_status == "0":
+            settings.CUSTOM['game_status'] = 0
+            return Response(data={"msg": "比赛中止"}, status=status.HTTP_200_OK)
+        elif game_status == "1":
+            settings.CUSTOM['game_status'] = 1
+            return Response(data={"msg": "比赛开始"}, status=status.HTTP_200_OK)
+
+        return Response(data={"msg": "未识别的比赛状态控制命令"}, status=status.HTTP_406_NOT_ACCEPTABLE)
