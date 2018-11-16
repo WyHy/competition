@@ -1,3 +1,4 @@
+from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import serializers
 
 from Profile.models import Profile
@@ -19,8 +20,8 @@ class AnswerSerializer(serializers.ModelSerializer):
         image = validated_data.get("image")
         profile = validated_data.get("profile")
 
-        obj = Answer.objects.get(image=image, profile=profile)
-        if obj:
+        try:
+            obj = Answer.objects.get(image=image, profile=profile)
             return super(AnswerSerializer, self).update(obj, validated_data)
-        else:
+        except ObjectDoesNotExist:
             return super(AnswerSerializer, self).create(validated_data)
