@@ -10,7 +10,7 @@ import requests
 
 from utils import get_jwt, HOST
 
-WATCH_PATH = '/home/stimage/Development/DATA/TEST_DATA'
+WATCH_PATH = '/home/stimage/Development/DATA/PRODUCTION_FULL_TEST/TIFFS'
 
 if not WATCH_PATH:
     print("The WATCH_PATH setting MUST be set.")
