@@ -12,7 +12,7 @@ class Question(models.Model):
 
     id = models.AutoField(primary_key=True, verbose_name='唯一主键')
     title = models.CharField(max_length=32, verbose_name=u"标题", null=True, blank=True)
-    image = models.OneToOneField(Image, on_delete=models.CASCADE, verbose_name="关联病理图像")
+    image = models.OneToOneField(Image, on_delete=models.CASCADE, limit_choices_to={'is_valid': 'YES'}, verbose_name="关联病理图像")
     choices = models.ManyToManyField(Type, verbose_name="答案选项")
     remark = models.TextField(verbose_name="题目描述", null=True, blank=True)
 
