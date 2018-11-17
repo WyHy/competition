@@ -78,12 +78,19 @@ if __name__ == '__main__':
                     task.put(item)
 
                 # 获取任务结果
-                for i in range(len(data)):
+                task_count = len(task)
+                result_count = 0
+                while 1:
                     try:
                         r = result.get(timeout=10)
                         print('Result: %s' % r)
+
+                        result_count += 1
                     except queue.Empty:
                         print("Waiting for Process Result.")
+
+                    if result_queue == task_count:
+                        break
 
                 # 关闭任务控制中心
                 manager.shutdown()
