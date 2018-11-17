@@ -48,7 +48,11 @@ if __name__ == '__main__':
     QueueManager.register('get_task_queue', callable=return_task_queue)
     QueueManager.register('get_result_queue', callable=return_result_queue)
     # 绑定端口5000, 设置验证码'abc':
-    manager = QueueManager(address=('127.0.0.1', 5000), authkey=b'abc')
+    # window 需要设置ip地址为127.0.0.1
+    # manager = QueueManager(address=('127.0.0.1', 5000), authkey=b'abc')
+    # ubuntu 无需设置
+    manager = QueueManager(address=('', 5000), authkey=b'abc')
+
     # 启动Queue:
     manager.start()
     # 获得通过网络访问的Queue对象:
