@@ -89,6 +89,8 @@ if __name__ == '__main__':
                 manager.shutdown()
                 print('master exit.')
 
+                break
+
         else:
             print("Waiting for competition start ...")
             time.sleep(3)
