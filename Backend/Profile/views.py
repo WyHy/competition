@@ -25,3 +25,7 @@ class ViewSet(viewsets.ModelViewSet):
 
 class AddUserSet(ViewSet):
     serializer_class = UserCreateSerializer
+
+    def create(self, request, *args, **kwargs):
+        print(request.data)
+        return super(AddUserSet, self).create(request, *args, **kwargs)
