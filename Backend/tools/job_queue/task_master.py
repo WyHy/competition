@@ -73,12 +73,13 @@ if __name__ == '__main__':
                 data = response.json()
 
                 # 添加任务
+                task_count = 0
                 for item in data:
                     print("Add task slide_id=%s" % item['id'])
                     task.put(item)
+                    task_count += 1
 
                 # 获取任务结果
-                task_count = len(task)
                 result_count = 0
                 while 1:
                     try:
