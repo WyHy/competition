@@ -17,7 +17,7 @@ class ImageFilter(filters.FilterSet):
 
 
 class ViewSet(viewsets.ModelViewSet):
-    queryset = Image.objects.all()
+    queryset = Image.objects.filter(is_valid='YES')
     serializer_class = ImageSerializer
     filter_backends = (DjangoFilterBackend, SearchFilter, OrderingFilter)
     filter_class = ImageFilter
