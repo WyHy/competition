@@ -14,7 +14,7 @@ class ProfileFilter(filters.FilterSet):
 
 
 class ViewSet(viewsets.ModelViewSet):
-    queryset = Profile.objects.filter(type=3)
+    queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
     filter_backends = (DjangoFilterBackend, SearchFilter, OrderingFilter)
     filter_class = ProfileFilter
