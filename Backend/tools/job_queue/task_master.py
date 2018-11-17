@@ -84,6 +84,9 @@ if __name__ == '__main__':
                 while 1:
                     try:
                         r = result.get(timeout=10)
+                        with open("task_result.txt", "a+") as o:
+                            o.write("%s\t%s\t%s\t\n" % (r['name'], r['id'], r['cost']))
+
                         print('Result: %s' % r)
 
                         result_count += 1
