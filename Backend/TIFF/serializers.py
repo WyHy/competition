@@ -7,8 +7,8 @@ class ImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Image
         fields = (
-            'id', 'name', 'case_no', 'path', 'progress', 'result_auto', 'result_manual', 'result_status', 'is_valid',
-            'is_valid', 'create_time', 'update_time'
+            'id', 'name', 'case_no', 'path', 'progress', 'result_auto', 'result_manual', 'result_status', 'status',
+            'is_valid', 'is_valid', 'create_time', 'update_time'
         )
 
 
