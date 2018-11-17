@@ -1,8 +1,10 @@
 import rest_framework_filters as filters
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from rest_framework.filters import OrderingFilter, SearchFilter
+from rest_framework.response import Response
 
+from Backend import settings
 from Middleware.authentication import CsrfExemptSessionAuthentication
 from .models import Image
 from .serializers import ImageSerializer, CompetitionQuestionSerializer, CompetitionProgressSerializer, \
@@ -26,11 +28,11 @@ class ViewSet(viewsets.ModelViewSet):
 
     authentication_classes = (CsrfExemptSessionAuthentication,)
 
-    # def update(self, request, *args, **kwargs):
-    #     if settings.redis_connection.get('status') == "0":
-    #         return Response(data={"msg": "比赛尚未开始，请等待！"}, status=status.HTTP_406_NOT_ACCEPTABLE)
-    #     else:
-    #         return super(ViewSet, self).update(request, *args, **kwargs)
+    def update(self, request, *args, **kwargs):
+        if settings.redis_connection.get('status') == "0":
+            return Response(data={"msg": "比赛尚未开始，请等待！"}, status=status.HTTP_406_NOT_ACCEPTABLE)
+        else:
+            return super(ViewSet, self).update(request, *args, **kwargs)
 
 
 class QuestionViewSet(ViewSet):
