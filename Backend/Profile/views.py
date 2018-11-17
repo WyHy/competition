@@ -3,6 +3,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets
 from rest_framework.filters import OrderingFilter, SearchFilter
 
+from Middleware.authentication import CsrfExemptSessionAuthentication
 from .models import Profile
 from .serializers import ProfileSerializer, UserCreateSerializer
 
@@ -21,6 +22,8 @@ class ViewSet(viewsets.ModelViewSet):
     lookup_field = 'id'
     ordering_fields = ('id', 'create_time',)
     ordering = ('id',)
+
+    authentication_classes = (CsrfExemptSessionAuthentication,)
 
 
 class AddUserSet(ViewSet):

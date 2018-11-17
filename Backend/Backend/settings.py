@@ -143,7 +143,7 @@ CUSTOM = {
     "game_status": 0,
 }
 
-# redis 配置
-redis_connection = redis.Redis(host='localhost', port=6379, decode_responses=True)
-# 设置初始比赛状态
-redis_connection.set('status', "0")
+# # redis 配置
+# redis_connection = redis.Redis(host='localhost', port=6379, decode_responses=True)
+# # 设置初始比赛状态
+# redis_connection.set('status', "0")
