@@ -75,6 +75,9 @@ if __name__ == '__main__':
                 # 添加任务
                 task_count = 0
                 for item in data:
+                    if item['status'] == "SUCCESS":
+                        continue
+
                     print("Add task slide_id=%s" % item['id'])
                     task.put(item)
                     task_count += 1
