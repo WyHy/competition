@@ -14,6 +14,11 @@ class Image(models.Model):
         ("DELETED", "已删除"),
     )
 
+    IS_VALID_CHOICES = (
+        ("YES", "是"),
+        ("NO", "否"),
+    )
+
     id = models.AutoField(primary_key=True, verbose_name='唯一主键')
     name = models.CharField(max_length=64, verbose_name=u"图像名称")
     case_no = models.CharField(max_length=64, verbose_name=u"病理号", default='-')
@@ -23,6 +28,7 @@ class Image(models.Model):
     result_manual = models.CharField(max_length=64, verbose_name=u"医生诊断结果", null=True, blank=True)
     result_status = models.CharField(max_length=64, verbose_name=u"标准诊断结果", null=True, blank=True)
     status = models.CharField(max_length=16, choices=STATUS_CHOICES, default="CREATED", verbose_name=u"状态")
+    is_valid = models.CharField(max_length=16, choices=IS_VALID_CHOICES, default="YES", verbose_name=u"是否显示")
     remark = models.TextField(verbose_name=u"故障原因", blank=True, null=True)
 
     create_time = models.DateTimeField(verbose_name=u"创建时间", auto_now_add=True)
