@@ -10,6 +10,7 @@ from rest_framework.response import Response
 from Activity.models import Answer
 from Activity.serializers import AnswerSerializer
 from Backend import settings
+from Middleware.authentication import CsrfExemptSessionAuthentication
 from Profile.models import Profile
 from TIFF.models import Image
 
@@ -30,6 +31,8 @@ class ViewSet(viewsets.ModelViewSet):
     lookup_field = 'id'
     ordering_fields = ('id', 'create_time',)
     ordering = ('id',)
+
+    authentication_classes = (CsrfExemptSessionAuthentication,)
 
 
 class StatisticViewSet(ViewSet):
