@@ -46,10 +46,11 @@ class StatisticViewSet(ViewSet):
         return Response(data={"status": "OK"}, status=status.HTTP_200_OK)
 
     def list(self, request, *args, **kwargs):
-        images = Image.objects.exclude(result_status__exact='-')
-        if images.count() != 40:
-            return Response(data={'err': 'The standard diagnose result is not complete, Please check and try again'},
-                            status=status.HTTP_503_SERVICE_UNAVAILABLE)
+        images = Image.objects.exclude(result_status__isnull=True)
+        print(images.count())
+        # if images.count() != 40:
+        #     return Response(data={'err': 'The standard diagnose result is not complete, Please check and try again'},
+        #                     status=status.HTTP_503_SERVICE_UNAVAILABLE)
 
         # the answer is right if gamer's answer is contained in standard diagnose result
         activies = Answer.objects.filter(image__result_status__contains=F('answer__name')).values('profile').annotate(
@@ -58,8 +59,10 @@ class StatisticViewSet(ViewSet):
         data = []
         for item in activies:
             profile = Profile.objects.get(id=item['profile'])
-            data.append({'name': profile.nickname, "count": item['count'], "tel": profile.user.username})
+            last_answer = Answer.objects.filter(profile=item['profile']).order_by('create_time').last()
+            data.append({'name': profile.nickname, "count": item['count'], "tel": profile.user.username, "submit_time": last_answer.create_time.strftime("%Y-%m-%d %H:%M:%S")})
 
+        data = sorted(data, key=lambda x: (-x['count'], x['submit_time']))
         return Response(data=data, status=status.HTTP_200_OK)
 
 
