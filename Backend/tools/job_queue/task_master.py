@@ -2,13 +2,11 @@ import queue
 import time
 from multiprocessing.managers import BaseManager
 
-# 发送任务的队列:
 import requests
 
 import sys
 
 sys.path.append("..")
-
 from utils import get_jwt, HOST
 
 task_queue = queue.Queue()
@@ -56,6 +54,7 @@ if __name__ == '__main__':
     # manager = QueueManager(address=('127.0.0.1', 5000), authkey=b'abc')
     # ubuntu 无需设置
     manager = QueueManager(address=('', 5000), authkey=b'abc')
+
     # 启动Queue:
     manager.start()
     # 获得通过网络访问的Queue对象:
@@ -75,8 +74,8 @@ if __name__ == '__main__':
                 # 添加任务
                 task_count = 0
                 for item in data:
-                    if item['status'] == "SUCCESS":
-                        continue
+                    # if item['status'] == "SUCCESS":
+                    #     continue
 
                     print("Add task slide_id=%s" % item['id'])
                     task.put(item)
@@ -87,6 +86,9 @@ if __name__ == '__main__':
                 while 1:
                     try:
                         r = result.get(timeout=10)
+                        with open("task_result.txt", "a+") as o:
+                            o.write("%s\t%s\t%s\t\n" % (r['name'], r['id'], r['cost']))
+
                         print('Result: %s' % r)
 
                         result_count += 1
