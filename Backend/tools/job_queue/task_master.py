@@ -2,10 +2,12 @@ import queue
 import time
 from multiprocessing.managers import BaseManager
 
-# 发送任务的队列:
 import requests
 
-from tools.utils import get_jwt, HOST
+import sys
+
+sys.path.append("..")
+from utils import get_jwt, HOST
 
 task_queue = queue.Queue()
 # 接收结果的队列:
@@ -72,8 +74,8 @@ if __name__ == '__main__':
                 # 添加任务
                 task_count = 0
                 for item in data:
-                    if item['status'] == "SUCCESS":
-                        continue
+                    # if item['status'] == "SUCCESS":
+                    #     continue
 
                     print("Add task slide_id=%s" % item['id'])
                     task.put(item)
