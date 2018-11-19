@@ -40,6 +40,7 @@ multipleEntranceRouter.register(r'users', profiles.AddUserSet)
 multipleEntranceRouter.register(r'images/questions', images.QuestionViewSet)
 multipleEntranceRouter.register(r'images/progress', images.ProgressViewSet)
 multipleEntranceRouter.register(r'images/results', images.ResultViewSet)
+multipleEntranceRouter.register(r'images/all', images.AllViewSet)
 multipleEntranceRouter.register(r'images', images.ViewSet)
 # 病理类型信息
 multipleEntranceRouter.register(r'types', types.ViewSet)

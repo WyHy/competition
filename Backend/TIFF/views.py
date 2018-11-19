@@ -17,6 +17,16 @@ class ImageFilter(filters.FilterSet):
         fields = ('id', 'name', 'case_no')
 
 
+class AllViewSet(viewsets.ModelViewSet):
+    queryset = Image.objects.all()
+    serializer_class = ImageSerializer
+    filter_backends = (DjangoFilterBackend, SearchFilter, OrderingFilter)
+    filter_class = ImageFilter
+    lookup_field = 'id'
+    ordering_fields = ('id', 'create_time',)
+    ordering = ('id',)
+
+
 class ViewSet(viewsets.ModelViewSet):
     queryset = Image.objects.filter(is_valid='YES')
     serializer_class = ImageSerializer
