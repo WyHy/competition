@@ -1,8 +1,6 @@
 import queue
 import time
-import datetime
 from multiprocessing.managers import BaseManager
-from random import shuffle
 
 import requests
 
@@ -59,7 +57,7 @@ if __name__ == '__main__':
     # manager = QueueManager(address=('127.0.0.1', 5000), authkey=b'abc')
 
     # ubuntu 无需设置
-    manager = QueueManager(address=('', 5000), authkey=b'abc')
+    manager = QueueManager(address=('', 5001), authkey=b'abc')
 
     # 启动Queue:
     manager.start()
@@ -67,7 +65,7 @@ if __name__ == '__main__':
     task = manager.get_task_queue()
     result = manager.get_result_queue()
 
-    log_path = "task_result.txt"
+    log_path = "task_result_.txt"
 
     # remove old process history
     if os.path.exists(log_path):
@@ -81,7 +79,7 @@ if __name__ == '__main__':
             # 获取图像id及图像名称
             response = requests.get('http://%s/api/v1/images/' % HOST, headers=HEADER)
             if response.status_code == 200 and response.json():
-                data = shuffle(response.json())
+                data = response.json()
 
                 # 添加任务
                 task_count = 0
@@ -95,15 +93,13 @@ if __name__ == '__main__':
 
                 print("TASK COUNT: %s " % task_count)
 
-                t0 = datetime.datetime.now()
-
                 # 获取任务结果
                 result_count = 0
                 while 1:
                     try:
                         r = result.get(timeout=10)
                         with open(log_path, "a+") as o:
-                            o.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\t\n" % (r['id'], r['name'], r['diagnose'], r['cell_count'], r['worker'], r['algo_cost'], r['update_cost']))
+                            o.write("%s\t%s\t%s\t%s\t%s\t\n" % (r['id'], r['name'], r['worker'], r['algo_cost'], r['update_cost']))
 
                         print('Result: %s' % r)
 
@@ -116,9 +112,6 @@ if __name__ == '__main__':
 
                 # 关闭任务控制中心
                 manager.shutdown()
-                t1 = datetime.datetime.now()
-
-                print(t1 - t0)
                 break
         else:
             print("Waiting for competition start ...")

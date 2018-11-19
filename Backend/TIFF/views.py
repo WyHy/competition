@@ -14,7 +14,7 @@ from .serializers import ImageSerializer, CompetitionQuestionSerializer, Competi
 class ImageFilter(filters.FilterSet):
     class Meta:
         model = Image
-        fields = ('id', 'name')
+        fields = ('id', 'name', 'case_no')
 
 
 class ViewSet(viewsets.ModelViewSet):

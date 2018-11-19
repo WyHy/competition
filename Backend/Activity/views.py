@@ -70,6 +70,9 @@ class GameStatusControlView(APIView):
     def get(self, request, format=None):
         game_status = request.GET.get('status')
 
+        # settings.redis_connection.set('status', '1')
+        # return Response(data={"msg": "比赛开始", 'status': '1'}, status=status.HTTP_200_OK)
+
         if game_status == "0":
             settings.redis_connection.set('status', '0')
             return Response(data={"msg": "比赛中止"}, status=status.HTTP_200_OK)

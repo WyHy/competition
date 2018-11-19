@@ -78,6 +78,6 @@ if __name__ == '__main__':
     # disable_slide_validation()
     # clean_slide_diagnose_result()
 
-    file_path = "./valid_slide_name.txt"
+    file_path = "./henan_test_slides_89.txt"
     make_selected_valid(file_path)
 
