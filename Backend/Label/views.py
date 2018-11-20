@@ -4,7 +4,7 @@ from rest_framework import viewsets
 from rest_framework.filters import OrderingFilter, SearchFilter
 
 from .models import Cell, ScreenShot
-from .serializers import CellSerializer, ScreenShotSerializer
+from .serializers import CellSerializer, CellEditSerializer, ScreenShotSerializer
 
 
 # Create your views here.
@@ -22,6 +22,12 @@ class CellViewSet(viewsets.ModelViewSet):
     lookup_field = 'id'
     ordering_fields = ('id', 'create_time',)
     ordering = ('id',)
+
+    def get_serializer_class(self):
+        if self.request.method == "POST" or self.request.method == "PATCH":
+            return CellEditSerializer
+
+        return CellSerializer
 
 
 class ScreenShotFilter(filters.FilterSet):

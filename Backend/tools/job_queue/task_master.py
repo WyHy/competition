@@ -81,7 +81,8 @@ if __name__ == '__main__':
             # 获取图像id及图像名称
             response = requests.get('http://%s/api/v1/images/' % HOST, headers=HEADER)
             if response.status_code == 200 and response.json():
-                data = shuffle(response.json())
+                data = response.json()
+                shuffle(data)
 
                 # 添加任务
                 task_count = 0

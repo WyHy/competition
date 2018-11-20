@@ -36,6 +36,12 @@ class CellSerializer(serializers.ModelSerializer):
         return 2 * obj.h
 
 
+class CellEditSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Cell
+        fields = ('id', 'image', 'x', 'y', 'w', 'h', 'cell_type', 'accuracy', 'source_type', 'create_time')
+
+
 class ScreenShotSerializer(serializers.ModelSerializer):
     class Meta:
         model = ScreenShot

@@ -3,6 +3,7 @@ from io import BytesIO
 
 import requests
 from sanic import Sanic, response
+import sys
 
 from Aslide.aslide import Aslide
 from Aslide.deepzoom import ADeepZoomGenerator
@@ -139,4 +140,11 @@ async def cell_image_request(request, image_id, x, y, w, h, format):
 
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=8073)
+    # server port
+    port = sys.argv[1]
+    try:
+        port = int(port)
+    except:
+        raise Exception("PORT %s IS NOT ACCEPTED!" % port)
+
+    app.run(host="0.0.0.0", port=port)

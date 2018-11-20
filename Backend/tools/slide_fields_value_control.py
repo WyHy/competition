@@ -54,7 +54,7 @@ def make_selected_valid(file_path):
 
         for slide_name in lines:
             image = None
-            response = requests.get('http://%s/api/v1/images/?case_no=%s' % (HOST, slide_name), headers=HEADER)
+            response = requests.get('http://%s/api/v1/images/all/?case_no=%s' % (HOST, slide_name), headers=HEADER)
             if response.status_code == 200 and response.json():
                 data = response.json()
                 if data:
@@ -66,7 +66,7 @@ def make_selected_valid(file_path):
                 "is_valid": "YES",
             }
 
-            response = requests.patch('http://%s/api/v1/images/%s/' % (HOST, image), json=data, headers=HEADER)
+            response = requests.patch('http://%s/api/v1/images/all/%s/' % (HOST, image), json=data, headers=HEADER)
             if response.status_code == 200:
                 pass
             else:
@@ -76,8 +76,8 @@ def make_selected_valid(file_path):
 
 if __name__ == '__main__':
     # disable_slide_validation()
-    # clean_slide_diagnose_result()
+    clean_slide_diagnose_result()
 
-    file_path = "./henan_test_slides_89.txt"
-    make_selected_valid(file_path)
+    # file_path = "./normal_40.txt"
+    # make_selected_valid(file_path)
 
