@@ -59,7 +59,7 @@ class StatisticViewSet(ViewSet):
         data = []
         for item in activies:
             profile = Profile.objects.get(id=item['profile'])
-            last_answer = Answer.objects.filter(profile=item['profile']).order_by('create_time').last()
+            last_answer = Answer.objects.filter(profile=item['profile']).order_by('create_time').first()
             data.append({'name': profile.nickname, "count": item['count'], "tel": profile.user.username, "submit_time": last_answer.create_time.strftime("%Y-%m-%d %H:%M:%S")})
 
         data = sorted(data, key=lambda x: (-x['count'], x['submit_time']))
