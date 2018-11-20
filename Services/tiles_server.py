@@ -152,4 +152,4 @@ if __name__ == '__main__':
     except:
         raise Exception("PORT %s IS NOT ACCEPTED!" % port)
 
-    app.run(host="0.0.0.0", port=port, , log_config=LOGGING)
+    app.run(host="0.0.0.0", port=port, log_config=LOGGING)

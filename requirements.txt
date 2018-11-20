@@ -13,3 +13,6 @@ openslide-python
 pyinotify
 requests
 redis
+uwsgi
+sanic
+numpy
