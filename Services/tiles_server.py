@@ -3,10 +3,15 @@ from io import BytesIO
 
 import requests
 from sanic import Sanic, response
+from sanic.config import LOGGING
 import sys
 
 from Aslide.aslide import Aslide
 from Aslide.deepzoom import ADeepZoomGenerator
+
+# The default logging handlers are ['accessStream', 'errorStream'] 
+# but we change it to use other handlers here for demo purpose 
+LOGGING['loggers']['network']['handlers'] = ['accessSysLog', 'errorSysLog'] 
 
 app = Sanic()
 
@@ -147,4 +152,4 @@ if __name__ == '__main__':
     except:
         raise Exception("PORT %s IS NOT ACCEPTED!" % port)
 
-    app.run(host="0.0.0.0", port=port)
+    app.run(host="0.0.0.0", port=port, log_config=LOGGING)
