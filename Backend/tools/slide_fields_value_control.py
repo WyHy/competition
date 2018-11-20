@@ -6,7 +6,7 @@ HEADER = {"Authorization": "JWT %s" % get_jwt('convert')}
 
 
 def disable_slide_validation():
-    response = requests.get('http://%s/api/v1/images/' % HOST, headers=HEADER)
+    response = requests.get('http://%s/api/v1/images/all/' % HOST, headers=HEADER)
     if response.status_code == 200 and response.json():
         data = response.json()
         ids = []
@@ -19,18 +19,37 @@ def disable_slide_validation():
         }
 
         for image_id in ids:
-            response = requests.patch('http://%s/api/v1/images/%s/' % (HOST, image_id), json=image, headers=HEADER)
+            response = requests.patch('http://%s/api/v1/images/all/%s/' % (HOST, image_id), json=image, headers=HEADER)
             if response.status_code == 200:
                 pass
             else:
                 print(response.json())
 
 
+# def remove_old_allocations():
+#     response = requests.get('http://%s/api/v1/missions/' % HOST, headers=HEADER)
+#     if response.status_code == 200 and response.json():
+#         data = response.json()
+#         ids = []
+
+#         for obj in data:
+#             ids.append(obj['id'])
+
+#         for image_id in ids:
+#             response = requests.delete('http://%s/api/v1/images/all/%s/' % (HOST, image_id), json=image, headers=HEADER)
+#             if response.status_code == 200:
+#                 pass
+#             else:
+#                 print(response.json())
+
+
+
 def clean_slide_diagnose_result():
-    response = requests.get('http://%s/api/v1/images/' % HOST, headers=HEADER)
+    response = requests.get('http://%s/api/v1/images/all/' % HOST, headers=HEADER)
     if response.status_code == 200 and response.json():
         data = response.json()
         ids = []
+        print(len(data))
 
         for obj in data:
             ids.append(obj['id'])
@@ -41,7 +60,7 @@ def clean_slide_diagnose_result():
         }
 
         for image_id in ids:
-            response = requests.patch('http://%s/api/v1/images/%s/' % (HOST, image_id), json=image, headers=HEADER)
+            response = requests.patch('http://%s/api/v1/images/all/%s/' % (HOST, image_id), json=image, headers=HEADER)
             if response.status_code == 200:
                 pass
             else:
@@ -52,18 +71,19 @@ def make_selected_valid(file_path):
     with open(file_path) as f:
         lines = [line.replace("\n", "") for line in f.readlines()]
 
-        for slide_name in lines:
+        for line in lines:
             image = None
-            response = requests.get('http://%s/api/v1/images/all/?case_no=%s' % (HOST, slide_name), headers=HEADER)
+            response = requests.get('http://%s/api/v1/images/all/?case_no=%s' % (HOST, line), headers=HEADER)
             if response.status_code == 200 and response.json():
                 data = response.json()
                 if data:
                     image = data[0]['id']
             else:
-                raise Exception("NO TIFF NAMED %s" % slide_name)
+                raise Exception("NO TIFF NAMED %s" % line)
 
             data = {
                 "is_valid": "YES",
+                # "result_status": line,
             }
 
             response = requests.patch('http://%s/api/v1/images/all/%s/' % (HOST, image), json=data, headers=HEADER)
@@ -75,9 +95,9 @@ def make_selected_valid(file_path):
 
 
 if __name__ == '__main__':
-    # disable_slide_validation()
+    disable_slide_validation()
     clean_slide_diagnose_result()
 
-    # file_path = "./normal_40.txt"
-    # make_selected_valid(file_path)
+    file_path = "./ZHENGZHOU_COMPETITION_SLIDES.txt"
+    make_selected_valid(file_path)
 
