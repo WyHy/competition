@@ -65,7 +65,6 @@ def clean_slide_diagnose_result():
     if response.status_code == 200 and response.json():
         data = response.json()
         ids = []
-        print(len(data))
 
         for obj in data:
             ids.append(obj['id'])
@@ -111,8 +110,18 @@ def make_selected_valid(file_path):
 
 
 if __name__ == '__main__':
+    print("1=> disable_slide_validation")
     disable_slide_validation()
+
+    print("2=> clean_slide_diagnose_result")
     clean_slide_diagnose_result()
 
+    print("3=> remove_old_allocations")
+    remove_old_allocations()
+
+    print("4=> remove_old_labels")
+    remove_old_labels()
+
+    print("5=> make_selected_valid")
     file_path = "./ZHENGZHOU_COMPETITION_SLIDES.txt"
     make_selected_valid(file_path)

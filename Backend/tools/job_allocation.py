@@ -10,12 +10,19 @@ def get_job_list():
     :return:
     """
     header = {"Authorization": "JWT %s" % get_jwt('convert')}
-    response = requests.get('http://%s/api/v1/images/' % HOST, headers=header)
-    if response.status_code == 200:
-        ids = [item['id'] for item in response.json()]
+    with open("ZHENGZHOU_COMPETITION_SLIDES.txt") as f:
+        lines = [line.replace("\n", "") for line in f.readlines()]
+
+        ids = []
+        for line in lines:
+            response = requests.get('http://%s/api/v1/images/all/?case_no=%s' % (HOST, line), headers=header)
+            if response.status_code == 200:
+                obj = response.json()[0]
+                ids.append(obj['id'])
+            else:
+                raise Exception(response.json())
+
         return ids
-    else:
-        raise Exception(response.json())
 
 
 def get_user_list():

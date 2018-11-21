@@ -21,4 +21,4 @@ class AllocationViewSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Allocation
-        fields = ('profile', 'tiff', )
+        fields = ('id', 'profile', 'tiff', )

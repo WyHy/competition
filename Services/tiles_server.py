@@ -37,7 +37,7 @@ def get_path(image_id, request):
         if not jwt:
             jwt = get_jwt(USERNAME)
 
-        tiff_url = 'http://%s/api/v1/images/?id=%s' % (HOST, image_id)
+        tiff_url = 'http://%s/api/v1/images/all/?id=%s' % (HOST, image_id)
 
         response = requests.get(tiff_url, headers={'Authorization': 'JWT {}'.format(jwt)})
         if response.status_code != 200:
