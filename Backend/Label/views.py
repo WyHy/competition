@@ -24,7 +24,7 @@ class CellViewSet(viewsets.ModelViewSet):
     ordering = ('id',)
 
     def get_serializer_class(self):
-        if self.request.method == "POST" or self.request.method == "PATCH":
+        if self.request.method == "POST" or self.request.method == "PATCH" or self.request.method == "DELETE":
             return CellEditSerializer
 
         return CellSerializer

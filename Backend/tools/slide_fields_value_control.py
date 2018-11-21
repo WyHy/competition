@@ -26,22 +26,38 @@ def disable_slide_validation():
                 print(response.json())
 
 
-# def remove_old_allocations():
-#     response = requests.get('http://%s/api/v1/missions/' % HOST, headers=HEADER)
-#     if response.status_code == 200 and response.json():
-#         data = response.json()
-#         ids = []
+def remove_old_allocations():
+    response = requests.get('http://%s/api/v1/missions/' % HOST, headers=HEADER)
+    if response.status_code == 200 and response.json():
+        data = response.json()
+        ids = []
 
-#         for obj in data:
-#             ids.append(obj['id'])
+        for obj in data:
+            ids.append(obj['id'])
 
-#         for image_id in ids:
-#             response = requests.delete('http://%s/api/v1/images/all/%s/' % (HOST, image_id), json=image, headers=HEADER)
-#             if response.status_code == 200:
-#                 pass
-#             else:
-#                 print(response.json())
+        for mission_id in ids:
+            response = requests.delete('http://%s/api/v1/missions/%s/' % (HOST, mission_id), headers=HEADER)
+            if response.status_code == 204:
+                pass
+            else:
+                print(response.json())
 
+
+def remove_old_labels():
+    response = requests.get('http://%s/api/v1/labels/' % HOST, headers=HEADER)
+    if response.status_code == 200 and response.json():
+        data = response.json()
+        ids = []
+
+        for obj in data:
+            ids.append(obj['id'])
+
+        for label_id in ids:
+            response = requests.delete('http://%s/api/v1/labels/%s/' % (HOST, label_id), headers=HEADER)
+            if response.status_code == 204:
+                pass
+            else:
+                print(response.json())
 
 
 def clean_slide_diagnose_result():
@@ -100,4 +116,3 @@ if __name__ == '__main__':
 
     file_path = "./ZHENGZHOU_COMPETITION_SLIDES.txt"
     make_selected_valid(file_path)
-

@@ -23,10 +23,7 @@ class ViewSet(viewsets.ModelViewSet):
     ordering = ('id',)
 
     def get_serializer_class(self):
-        # if self.request.method == 'GET':
-        #     return AllocationViewSerializer
-
-        if self.request.method == 'POST':
+        if self.request.method == 'POST' or self.request.method == 'PATCH' or self.request.method == 'DELETE':
             return AllocationSerializer
 
         return AllocationViewSerializer
